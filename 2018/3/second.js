@@ -1,4 +1,4 @@
-const { read, range } = require("../../util");
+const { read } = require("../../util");
 const { parse } = require("./util");
 
 const input = read("./first-input.txt");
@@ -16,8 +16,8 @@ input
     let compared = {};
 
     for (let i = 0; i < arr.length; i++) {
-      for (let j = 1; j < arr.length; j++) {
-        if (!hasCollision(arr[i].coordinates, arr[j].coordinates)) {
+      for (let j = 0; j < arr.length; j++) {
+        if (i !== j && !hasCollision(arr[i].coordinates, arr[j].coordinates)) {
           if (compared[arr[i].id]) {
             compared[arr[i].id] = compared[arr[i].id] + 1;
           } else {

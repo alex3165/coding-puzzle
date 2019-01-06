@@ -32,22 +32,14 @@ const hasCollision = (a, b) => {
 input
   .then(content => {
     const arr = content.map(parse);
-
-    let compared = {};
     let collisions = [];
 
     for (let i = 0; i < arr.length; i++) {
-      for (let j = 1; j < arr.length; j++) {
-        if (
-          i !== j &&
-          !compared[`${i}${j}`] &&
-          hasCollision(arr[i].coordinates, arr[j].coordinates)
-        ) {
+      for (let j = i + 1; j < arr.length; j++) {
+        if (hasCollision(arr[i].coordinates, arr[j].coordinates)) {
           collisions = collisions.concat(
             getCollisions(arr[i].coordinates, arr[j].coordinates)
           );
-
-          compared[`${j}${i}`] = true;
         }
       }
     }
