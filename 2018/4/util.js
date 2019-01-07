@@ -21,14 +21,7 @@ const parseDedupe = content => {
 
     const lastTuple = acc[acc.length - 1];
     if (lastTuple[1].includes("Guard") && next[1].includes("Guard")) {
-      console.log("HEEE", lastTuple, next);
       acc.pop();
-      acc.push(next);
-      return acc;
-    }
-
-    if (lastTuple[1] === next[1]) {
-      return acc;
     }
 
     acc.push(next);

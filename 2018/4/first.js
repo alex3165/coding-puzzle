@@ -2,26 +2,31 @@ const { read } = require("../../util");
 const { parseDedupe } = require("./util");
 const input = read("./first-input.txt");
 const moment = require("moment");
+const { range } = require("../../util");
 
 const getDateKey = date =>
   moment(date)
     .add(30, "minutes")
     .format("YYYY-MM-DD");
 
-const groupRecords = records => {
-  const grouped = {};
+const mode = arr =>
+  arr
+    .sort(
+      (a, b) =>
+        arr.filter(v => v === a).length - arr.filter(v => v === b).length
+    )
+    .pop();
 
-  records.forEach(([date, instruction], index) => {
-    if (instruction.includes("Guard")) {
-      grouped[getDateKey(date)] = [[date, instruction]];
-    } else if (Array.isArray(grouped[getDateKey(date)])) {
+const groupRecords = records => {
+  return records.reduce((grouped, [date, instruction]) => {
+    if (Array.isArray(grouped[getDateKey(date)])) {
       grouped[getDateKey(date)].push([date, instruction]);
     } else {
       grouped[getDateKey(date)] = [[date, instruction]];
     }
-  });
 
-  return grouped;
+    return grouped;
+  }, {});
 };
 
 const extractId = string =>
@@ -34,22 +39,29 @@ input
     const mapGuardIdToTime = {};
 
     Object.values(records).forEach(instructions => {
-      const guardInstruction = instructions.shift();
-      const guardId = extractId(guardInstruction[1]);
+      const guardId = extractId(instructions.shift()[1]);
 
       for (let i = 0; i < instructions.length; i = i + 2) {
-        const sleep = instructions[i];
-        const awake = instructions[i + 1];
-        const diff = moment(awake[0]).diff(moment(sleep[0]), "minutes");
+        const sleep = moment(instructions[i][0])
+          .utc()
+          .minutes();
+        const awake = moment(instructions[i + 1][0])
+          .utc()
+          .minutes();
+
+        const diff = awake - sleep;
+        const currentRange = range(diff, sleep);
 
         if (mapGuardIdToTime[guardId]) {
           mapGuardIdToTime[guardId].total += diff;
-          mapGuardIdToTime[guardId].entries.push(diff - 1);
+          mapGuardIdToTime[guardId].range = mapGuardIdToTime[
+            guardId
+          ].range.concat(currentRange);
         } else {
           mapGuardIdToTime[guardId] = {
-            id: guardId,
             total: diff,
-            entries: [diff - 1]
+            id: guardId,
+            range: currentRange
           };
         }
       }
@@ -59,6 +71,6 @@ input
       a.total > b.total ? -1 : 1
     );
 
-    return sorted[0].id * sorted[0].entries.sort((a, b) => (a > b ? -1 : 1))[0];
+    return mode(sorted[0].range) * sorted[0].id;
   })
   .then(console.log);
