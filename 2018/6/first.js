@@ -28,7 +28,7 @@ const getBounds = coordinates => {
   );
 };
 
-const getDistance = (a, b) => Math.abs(a[0] - b[0] + a[1] - b[1]);
+const getDistance = (a, b) => Math.abs(a[0] - b[0]) + Math.abs(a[1] - b[1]);
 
 input
   .then(coordinatesStr => {
@@ -48,13 +48,26 @@ input
       .map(point => {
         const distances = coordinates.map(coord => getDistance(point, coord));
         const sortedDistances = [...distances].sort((a, b) => (a < b ? -1 : 1));
-
-        return sortedDistances[0] === sortedDistances[1]
-          ? -1
-          : distances.indexOf(sortedDistances[0]);
+        const winningIndex = distances.indexOf(sortedDistances[0]);
+        return sortedDistances[0] === sortedDistances[1] ? -1 : winningIndex;
       })
       .filter(index => index !== -1);
 
-    console.log(mode(matrixIndexes));
+    const indexMapCount = {};
+    matrixIndexes.forEach(el => {
+      if (indexMapCount[el]) {
+        indexMapCount[el]++;
+      } else {
+        indexMapCount[el] = 1;
+      }
+    });
+
+    const res = Object.keys(indexMapCount).sort((a, b) =>
+      indexMapCount[a] < indexMapCount[b] ? 1 : -1
+    );
+
+    console.log(coordinates[res[0]]);
+
+    return indexMapCount[res[0]];
   })
   .then(console.log);
