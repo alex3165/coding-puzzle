@@ -1,7 +1,6 @@
-const { read } = require("../../util");
+const { read, range, mode } = require("../../util");
 const { parseDedupe } = require("./util");
 const input = read("./second-input.txt");
-const { range } = require("../../util");
 const moment = require("moment");
 
 const mode = arr =>

@@ -1,16 +1,7 @@
-const { read } = require("../../util");
+const { read, range, mode } = require("../../util");
 const { parseDedupe } = require("./util");
 const input = read("./first-input.txt");
-const { range } = require("../../util");
 const moment = require("moment");
-
-const mode = arr =>
-  arr
-    .sort(
-      (a, b) =>
-        arr.filter(v => v === a).length - arr.filter(v => v === b).length
-    )
-    .pop();
 
 const extractId = string =>
   parseInt(string.split(/Guard #(.+) begins shift/)[1]);
