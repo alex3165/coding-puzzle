@@ -8,7 +8,15 @@
   },
   "author": "",
   "license": "ISC",
+  "husky": {
+    "hooks": {
+      "pre-commit": "node count"
+    }
+  },
   "dependencies": {
     "moment": "^2.23.0"
+  },
+  "devDependencies": {
+    "husky": "^1.3.1"
   }
 }

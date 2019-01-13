@@ -12,7 +12,6 @@ input
       for (let i = 0; i < sortedRow.length; i++) {
         for (let j = sortedRow.length - 1; j >= 0; j--) {
           if (sortedRow[j] % sortedRow[i] === 0 && j > i) {
-            console.log(sortedRow[j], sortedRow[i]);
             res = sortedRow[j] / sortedRow[i];
             break;
           }
