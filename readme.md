@@ -4,4 +4,4 @@
 
 - [adventofcode](https://adventofcode.com): see `/adventofcode` folder
 
-Number of puzzles solved: **4/365**
+Number of puzzles solved: **15/365**
