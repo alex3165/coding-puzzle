@@ -53,6 +53,60 @@ input
       })
       .filter(index => index !== -1);
 
+    const areCoordinatesInfinite = coordinates.slice(4, 5).map((coord, i) => {
+      const limits = [
+        [coord[0] - 2000, coord[1]],
+        [coord[0] + 2000, coord[1]],
+        [coord[0], coord[1] - 2000],
+        [coord[0], coord[1] + 2000]
+      ];
+
+      let hisMinX = true;
+      let hisMaxX = true;
+      let hisMinY = true;
+      let hisMaxY = true;
+      let j = 0;
+
+      for (let pos of coordinates) {
+        if (i === j) {
+          j++;
+          continue;
+        }
+        if (
+          hisMinX &&
+          getDistance(pos, limits[0]) < getDistance(limits[0], coord)
+        ) {
+          hisMinX = false;
+        }
+
+        if (
+          hisMaxX &&
+          getDistance(pos, limits[1]) < getDistance(limits[1], coord)
+        ) {
+          hisMaxX = false;
+        }
+
+        if (
+          hisMinY &&
+          getDistance(pos, limits[2]) < getDistance(limits[2], coord)
+        ) {
+          hisMinY = false;
+        }
+
+        if (
+          hisMaxY &&
+          getDistance(pos, limits[3]) < getDistance(limits[3], coord)
+        ) {
+          hisMaxY = false;
+        }
+        j++;
+      }
+      console.log(hisMinX, hisMaxX, hisMinY, hisMaxY);
+      return hisMinX || hisMaxX || hisMinY || hisMaxY;
+    });
+
+    // console.log(areCoordinatesInfinite);
+
     const indexMapCount = {};
     matrixIndexes.forEach(el => {
       if (indexMapCount[el]) {
