@@ -1,4 +1,4 @@
-const { read, range, mode } = require("../../util");
+const { read, range, mode } = require("../../../util");
 const input = read("./first-input.txt");
 
 const getBounds = coordinates => {

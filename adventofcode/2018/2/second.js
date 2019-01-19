@@ -1,4 +1,4 @@
-const { read } = require("../../util");
+const { read } = require("../../../util");
 
 const input = read("./second-input.txt");
 

@@ -1,4 +1,4 @@
-const { read, range } = require("../../util");
+const { read, range } = require("../../../util");
 const { parse } = require("./util");
 
 const input = read("./first-input.txt");
