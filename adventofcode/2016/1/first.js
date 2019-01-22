@@ -3,30 +3,46 @@ const input = read("./first-input.txt");
 
 input
   .then(([string]) => {
-    const res = string.split(", ").reduce(
-      (acc, curr) => {
-        const [direction, number] = curr.split(/(L|R)(.+)/g).filter(Boolean);
-        acc[direction] = {
-          count: acc[direction].count + 1,
-          total: acc[direction].total + parseInt(number)
-        };
+    const { x, y } = string.split(", ").reduce(
+      (acc, next) => {
+        const nextDir = next[0];
+        const nextSteps = parseInt(next.slice(1));
 
-        return acc;
+        if (acc.facing === "north" && nextDir === "R") {
+          return { x: acc.x + nextSteps, y: acc.y, facing: "east" };
+        }
+
+        if (acc.facing === "north" && nextDir === "L") {
+          return { x: acc.x - nextSteps, y: acc.y, facing: "west" };
+        }
+
+        if (acc.facing === "east" && nextDir === "R") {
+          return { x: acc.x, y: acc.y - nextSteps, facing: "south" };
+        }
+
+        if (acc.facing === "east" && nextDir === "L") {
+          return { x: acc.x, y: acc.y + nextSteps, facing: "north" };
+        }
+
+        if (acc.facing === "west" && nextDir === "R") {
+          return { x: acc.x, y: acc.y + nextSteps, facing: "north" };
+        }
+
+        if (acc.facing === "west" && nextDir === "L") {
+          return { x: acc.x, y: acc.y - nextSteps, facing: "south" };
+        }
+
+        if (acc.facing === "south" && nextDir === "R") {
+          return { x: acc.x - nextSteps, y: acc.y, facing: "west" };
+        }
+
+        if (acc.facing === "south" && nextDir === "L") {
+          return { x: acc.x + nextSteps, y: acc.y, facing: "east" };
+        }
       },
-      {
-        L: { count: 0, total: 0 },
-        R: { count: 0, total: 0 }
-      }
+      { x: 0, y: 0, facing: "north" }
     );
-    // const methodL = res.L.count % 2 === 0 ? Math.floor : Math.ceil;
 
-    // const resL = methodL(res.L.total / 2) + (res.L.total % 2);
-    // console.log(resL);
-    // return
-    // return (
-    // Math.floor(res.L.total / res.L.count) +
-    // (res.L.total % res.L.count) +
-    // (Math.floor(res.R.total / res.R.count) + (res.R.total % res.R.count))
-    // );
+    return Math.abs(x) + Math.abs(y);
   })
   .then(console.log);
