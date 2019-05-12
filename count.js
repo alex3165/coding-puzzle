@@ -13,9 +13,13 @@ const walkSync = (dir, filelist = []) => {
   return filelist;
 };
 
-const count = walkSync("./adventofcode/").filter(
-  file => file.includes(".js") && !file.includes("util")
-);
+const count = []
+  .concat(
+    walkSync("./adventofcode/"),
+    walkSync("./hackerrank/"),
+    walkSync("./other/")
+  )
+  .filter(file => file.includes(".js") && !file.includes("util"));
 
 const readme = fs.readFileSync("./readme.md", "utf-8");
 
